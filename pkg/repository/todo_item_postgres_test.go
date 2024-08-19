@@ -3,10 +3,12 @@ package repository
 import (
 	"database/sql"
 	"errors"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	sqlmock "github.com/zhashkevych/go-sqlxmock"
-	"github.com/zhashkevych/todo-app"
-	"testing"
+
+	"github.com/hoachnt/todo-app"
 )
 
 func TestTodoItemPostgres_Create(t *testing.T) {

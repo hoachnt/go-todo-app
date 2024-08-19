@@ -10,10 +10,11 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"github.com/zhashkevych/todo-app"
-	"github.com/zhashkevych/todo-app/pkg/handler"
-	"github.com/zhashkevych/todo-app/pkg/repository"
-	"github.com/zhashkevych/todo-app/pkg/service"
+
+	"github.com/hoachnt/todo-app"
+	"github.com/hoachnt/todo-app/pkg/handler"
+	"github.com/hoachnt/todo-app/pkg/repository"
+	"github.com/hoachnt/todo-app/pkg/service"
 )
 
 // @title Todo App API

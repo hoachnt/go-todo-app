@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/zhashkevych/todo-app"
+	"github.com/hoachnt/todo-app"
 )
 
 // @Summary SignUp

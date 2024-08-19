@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/zhashkevych/todo-app"
+	"github.com/hoachnt/todo-app"
 )
 
 // @Summary Create todo list
@@ -49,7 +49,7 @@ type getAllListsResponse struct {
 	Data []todo.TodoList `json:"data"`
 }
 
-// @Summary Get All Lists 
+// @Summary Get All Lists
 // @Security ApiKeyAuth
 // @Tags lists
 // @Description get all lists

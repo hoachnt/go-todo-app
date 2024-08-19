@@ -2,10 +2,11 @@ package repository
 
 import (
 	"fmt"
+	"strings"
+
+	"github.com/hoachnt/todo-app"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
-	"github.com/zhashkevych/todo-app"
-	"strings"
 )
 
 type TodoListPostgres struct {

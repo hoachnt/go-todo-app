@@ -4,10 +4,11 @@ import (
 	"crypto/sha1"
 	"errors"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/zhashkevych/todo-app"
-	"github.com/zhashkevych/todo-app/pkg/repository"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/hoachnt/todo-app"
+	"github.com/hoachnt/todo-app/pkg/repository"
 )
 
 const (

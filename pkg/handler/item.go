@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/zhashkevych/todo-app"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
+	"github.com/hoachnt/todo-app"
 )
 
 func (h *Handler) createItem(c *gin.Context) {
