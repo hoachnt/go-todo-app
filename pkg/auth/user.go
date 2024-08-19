@@ -1,4 +1,4 @@
-package service
+package auth
 
 import (
 	"crypto/sha1"
@@ -7,8 +7,9 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/hoachnt/go-todo-app"
-	"github.com/hoachnt/go-todo-app/pkg/repository"
+
+	"github.com/hoachnt/go-todo-app/internal/domain"
+	"github.com/hoachnt/go-todo-app/internal/repository"
 )
 
 const (
@@ -22,20 +23,20 @@ type tokenClaims struct {
 	UserId int `json:"user_id"`
 }
 
-type AuthService struct {
+type User struct {
 	repo repository.Authorization
 }
 
-func NewAuthService(repo repository.Authorization) *AuthService {
-	return &AuthService{repo: repo}
+func NewUser(repo repository.Authorization) *User {
+	return &User{repo: repo}
 }
 
-func (s *AuthService) CreateUser(user todo.User) (int, error) {
+func (s *User) CreateUser(user domain.User) (int, error) {
 	user.Password = generatePasswordHash(user.Password)
 	return s.repo.CreateUser(user)
 }
 
-func (s *AuthService) GenerateToken(username, password string) (string, error) {
+func (s *User) GenerateToken(username, password string) (string, error) {
 	user, err := s.repo.GetUser(username, generatePasswordHash(password))
 	if err != nil {
 		return "", err
@@ -52,7 +53,7 @@ func (s *AuthService) GenerateToken(username, password string) (string, error) {
 	return token.SignedString([]byte(signingKey))
 }
 
-func (s *AuthService) ParseToken(accessToken string) (int, error) {
+func (s *User) ParseToken(accessToken string) (int, error) {
 	token, err := jwt.ParseWithClaims(accessToken, &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("invalid signing method")

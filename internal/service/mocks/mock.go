@@ -5,9 +5,11 @@
 package mock_service
 
 import (
-	gomock "github.com/golang/mock/gomock"
-	todo "github.com/hoachnt/go-todo-app"
 	reflect "reflect"
+
+	gomock "github.com/golang/mock/gomock"
+
+	"github.com/hoachnt/go-todo-app/internal/domain"
 )
 
 // MockAuthorization is a mock of Authorization interface
@@ -34,7 +36,7 @@ func (m *MockAuthorization) EXPECT() *MockAuthorizationMockRecorder {
 }
 
 // CreateUser mocks base method
-func (m *MockAuthorization) CreateUser(user todo.User) (int, error) {
+func (m *MockAuthorization) CreateUser(user domain.User) (int, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateUser", user)
 	ret0, _ := ret[0].(int)
@@ -102,7 +104,7 @@ func (m *MockTodoList) EXPECT() *MockTodoListMockRecorder {
 }
 
 // Create mocks base method
-func (m *MockTodoList) Create(userId int, list todo.TodoList) (int, error) {
+func (m *MockTodoList) Create(userId int, list domain.TodoList) (int, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", userId, list)
 	ret0, _ := ret[0].(int)
@@ -117,10 +119,10 @@ func (mr *MockTodoListMockRecorder) Create(userId, list interface{}) *gomock.Cal
 }
 
 // GetAll mocks base method
-func (m *MockTodoList) GetAll(userId int) ([]todo.TodoList, error) {
+func (m *MockTodoList) GetAll(userId int) ([]domain.TodoList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAll", userId)
-	ret0, _ := ret[0].([]todo.TodoList)
+	ret0, _ := ret[0].([]domain.TodoList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -132,10 +134,10 @@ func (mr *MockTodoListMockRecorder) GetAll(userId interface{}) *gomock.Call {
 }
 
 // GetById mocks base method
-func (m *MockTodoList) GetById(userId, listId int) (todo.TodoList, error) {
+func (m *MockTodoList) GetById(userId, listId int) (domain.TodoList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetById", userId, listId)
-	ret0, _ := ret[0].(todo.TodoList)
+	ret0, _ := ret[0].(domain.TodoList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -161,7 +163,7 @@ func (mr *MockTodoListMockRecorder) Delete(userId, listId interface{}) *gomock.C
 }
 
 // Update mocks base method
-func (m *MockTodoList) Update(userId, listId int, input todo.UpdateListInput) error {
+func (m *MockTodoList) Update(userId, listId int, input domain.UpdateListInput) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", userId, listId, input)
 	ret0, _ := ret[0].(error)
@@ -198,7 +200,7 @@ func (m *MockTodoItem) EXPECT() *MockTodoItemMockRecorder {
 }
 
 // Create mocks base method
-func (m *MockTodoItem) Create(userId, listId int, item todo.TodoItem) (int, error) {
+func (m *MockTodoItem) Create(userId, listId int, item domain.TodoItem) (int, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", userId, listId, item)
 	ret0, _ := ret[0].(int)
@@ -213,10 +215,10 @@ func (mr *MockTodoItemMockRecorder) Create(userId, listId, item interface{}) *go
 }
 
 // GetAll mocks base method
-func (m *MockTodoItem) GetAll(userId, listId int) ([]todo.TodoItem, error) {
+func (m *MockTodoItem) GetAll(userId, listId int) ([]domain.TodoItem, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAll", userId, listId)
-	ret0, _ := ret[0].([]todo.TodoItem)
+	ret0, _ := ret[0].([]domain.TodoItem)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -228,10 +230,10 @@ func (mr *MockTodoItemMockRecorder) GetAll(userId, listId interface{}) *gomock.C
 }
 
 // GetById mocks base method
-func (m *MockTodoItem) GetById(userId, itemId int) (todo.TodoItem, error) {
+func (m *MockTodoItem) GetById(userId, itemId int) (domain.TodoItem, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetById", userId, itemId)
-	ret0, _ := ret[0].(todo.TodoItem)
+	ret0, _ := ret[0].(domain.TodoItem)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -257,7 +259,7 @@ func (mr *MockTodoItemMockRecorder) Delete(userId, itemId interface{}) *gomock.C
 }
 
 // Update mocks base method
-func (m *MockTodoItem) Update(userId, itemId int, input todo.UpdateItemInput) error {
+func (m *MockTodoItem) Update(userId, itemId int, input domain.UpdateItemInput) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", userId, itemId, input)
 	ret0, _ := ret[0].(error)

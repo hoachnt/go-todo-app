@@ -11,10 +11,11 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
-	"github.com/hoachnt/go-todo-app"
-	"github.com/hoachnt/go-todo-app/pkg/handler"
-	"github.com/hoachnt/go-todo-app/pkg/repository"
-	"github.com/hoachnt/go-todo-app/pkg/service"
+	"github.com/hoachnt/go-todo-app/internal/handler"
+	"github.com/hoachnt/go-todo-app/internal/repository"
+	"github.com/hoachnt/go-todo-app/internal/server"
+	"github.com/hoachnt/go-todo-app/internal/service"
+	"github.com/hoachnt/go-todo-app/pkg/auth"
 )
 
 // @title Todo App API
@@ -53,12 +54,12 @@ func main() {
 
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
-	handlers := handler.NewHandler(services)
+	handlers := handler.NewHandler(services, auth.NewUser(repos))
 
-	srv := new(todo.Server)
+	srv := new(server.Server)
 	go func() {
 		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
-			logrus.Fatalf("error occured while running http server: %s", err.Error())
+			logrus.Fatalf("error occured while ruservicesnning http server: %s", err.Error())
 		}
 	}()
 

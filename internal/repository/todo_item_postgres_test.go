@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	sqlmock "github.com/zhashkevych/go-sqlxmock"
 
-	"github.com/hoachnt/go-todo-app"
+	"github.com/hoachnt/go-todo-app/internal/domain"
 )
 
 func TestTodoItemPostgres_Create(t *testing.T) {
@@ -22,7 +22,7 @@ func TestTodoItemPostgres_Create(t *testing.T) {
 
 	type args struct {
 		listId int
-		item   todo.TodoItem
+		item   domain.TodoItem
 	}
 	type mockBehavior func(args args, id int)
 
@@ -37,7 +37,7 @@ func TestTodoItemPostgres_Create(t *testing.T) {
 			name: "Ok",
 			input: args{
 				listId: 1,
-				item: todo.TodoItem{
+				item: domain.TodoItem{
 					Title:       "test title",
 					Description: "test description",
 				},
@@ -60,7 +60,7 @@ func TestTodoItemPostgres_Create(t *testing.T) {
 			name: "Empty Fields",
 			input: args{
 				listId: 1,
-				item: todo.TodoItem{
+				item: domain.TodoItem{
 					Title:       "",
 					Description: "description",
 				},
@@ -80,7 +80,7 @@ func TestTodoItemPostgres_Create(t *testing.T) {
 			name: "Failed 2nd Insert",
 			input: args{
 				listId: 1,
-				item: todo.TodoItem{
+				item: domain.TodoItem{
 					Title:       "title",
 					Description: "description",
 				},
@@ -134,7 +134,7 @@ func TestTodoItemPostgres_GetAll(t *testing.T) {
 		name    string
 		mock    func()
 		input   args
-		want    []todo.TodoItem
+		want    []domain.TodoItem
 		wantErr bool
 	}{
 		{
@@ -152,7 +152,7 @@ func TestTodoItemPostgres_GetAll(t *testing.T) {
 				listId: 1,
 				userId: 1,
 			},
-			want: []todo.TodoItem{
+			want: []domain.TodoItem{
 				{1, "title1", "description1", true},
 				{2, "title2", "description2", false},
 				{3, "title3", "description3", false},
@@ -206,7 +206,7 @@ func TestTodoItemPostgres_GetById(t *testing.T) {
 		name    string
 		mock    func()
 		input   args
-		want    todo.TodoItem
+		want    domain.TodoItem
 		wantErr bool
 	}{
 		{
@@ -222,7 +222,7 @@ func TestTodoItemPostgres_GetById(t *testing.T) {
 				itemId: 1,
 				userId: 1,
 			},
-			want: todo.TodoItem{1, "title1", "description1", true},
+			want: domain.TodoItem{1, "title1", "description1", true},
 		},
 		{
 			name: "Not Found",
@@ -327,7 +327,7 @@ func TestTodoItemPostgres_Update(t *testing.T) {
 	type args struct {
 		itemId int
 		userId int
-		input  todo.UpdateItemInput
+		input  domain.UpdateItemInput
 	}
 	tests := []struct {
 		name    string
@@ -344,7 +344,7 @@ func TestTodoItemPostgres_Update(t *testing.T) {
 			input: args{
 				itemId: 1,
 				userId: 1,
-				input: todo.UpdateItemInput{
+				input: domain.UpdateItemInput{
 					Title:       stringPointer("new title"),
 					Description: stringPointer("new description"),
 					Done:        boolPointer(true),
@@ -360,7 +360,7 @@ func TestTodoItemPostgres_Update(t *testing.T) {
 			input: args{
 				itemId: 1,
 				userId: 1,
-				input: todo.UpdateItemInput{
+				input: domain.UpdateItemInput{
 					Title:       stringPointer("new title"),
 					Description: stringPointer("new description"),
 				},
@@ -375,7 +375,7 @@ func TestTodoItemPostgres_Update(t *testing.T) {
 			input: args{
 				itemId: 1,
 				userId: 1,
-				input: todo.UpdateItemInput{
+				input: domain.UpdateItemInput{
 					Title: stringPointer("new title"),
 				},
 			},

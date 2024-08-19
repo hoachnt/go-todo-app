@@ -4,10 +4,9 @@ import (
 	"database/sql"
 	"testing"
 
+	"github.com/hoachnt/go-todo-app/internal/domain"
 	"github.com/stretchr/testify/assert"
 	sqlmock "github.com/zhashkevych/go-sqlxmock"
-
-	"github.com/hoachnt/go-todo-app"
 )
 
 func TestTodoListPostgres_Create(t *testing.T) {
@@ -21,7 +20,7 @@ func TestTodoListPostgres_Create(t *testing.T) {
 
 	type args struct {
 		userId int
-		item   todo.TodoList
+		item   domain.TodoList
 	}
 	tests := []struct {
 		name    string
@@ -46,7 +45,7 @@ func TestTodoListPostgres_Create(t *testing.T) {
 			},
 			input: args{
 				userId: 1,
-				item: todo.TodoList{
+				item: domain.TodoList{
 					Title:       "title",
 					Description: "description",
 				},
@@ -66,7 +65,7 @@ func TestTodoListPostgres_Create(t *testing.T) {
 			},
 			input: args{
 				userId: 1,
-				item: todo.TodoList{
+				item: domain.TodoList{
 					Title:       "",
 					Description: "description",
 				},
@@ -107,7 +106,7 @@ func TestTodoListPostgres_GetAll(t *testing.T) {
 		name    string
 		mock    func()
 		input   args
-		want    []todo.TodoList
+		want    []domain.TodoList
 		wantErr bool
 	}{
 		{
@@ -124,7 +123,7 @@ func TestTodoListPostgres_GetAll(t *testing.T) {
 			input: args{
 				userId: 1,
 			},
-			want: []todo.TodoList{
+			want: []domain.TodoList{
 				{1, "title1", "description1"},
 				{2, "title2", "description2"},
 				{3, "title3", "description3"},
@@ -144,7 +143,7 @@ func TestTodoListPostgres_GetAll(t *testing.T) {
 			input: args{
 				userId: 1,
 			},
-			want: []todo.TodoList{
+			want: []domain.TodoList{
 				{1, "title1", "description1"},
 				{2, "title2", "description2"},
 				{3, "title3", "description3"},
@@ -185,7 +184,7 @@ func TestTodoListPostgres_GetById(t *testing.T) {
 		name    string
 		mock    func()
 		input   args
-		want    todo.TodoList
+		want    domain.TodoList
 		wantErr bool
 	}{
 		{
@@ -201,7 +200,7 @@ func TestTodoListPostgres_GetById(t *testing.T) {
 				listId: 1,
 				userId: 1,
 			},
-			want: todo.TodoList{1, "title1", "description1"},
+			want: domain.TodoList{1, "title1", "description1"},
 		},
 		{
 			name: "Not Found",
@@ -306,7 +305,7 @@ func TestTodoListPostgres_Update(t *testing.T) {
 	type args struct {
 		listId int
 		userId int
-		input  todo.UpdateListInput
+		input  domain.UpdateListInput
 	}
 	tests := []struct {
 		name    string
@@ -323,7 +322,7 @@ func TestTodoListPostgres_Update(t *testing.T) {
 			input: args{
 				listId: 1,
 				userId: 1,
-				input: todo.UpdateListInput{
+				input: domain.UpdateListInput{
 					Title:       stringPointer("new title"),
 					Description: stringPointer("new description"),
 				},
@@ -338,7 +337,7 @@ func TestTodoListPostgres_Update(t *testing.T) {
 			input: args{
 				listId: 1,
 				userId: 1,
-				input: todo.UpdateListInput{
+				input: domain.UpdateListInput{
 					Title: stringPointer("new title"),
 				},
 			},
@@ -352,7 +351,7 @@ func TestTodoListPostgres_Update(t *testing.T) {
 			input: args{
 				listId: 1,
 				userId: 1,
-				input: todo.UpdateListInput{
+				input: domain.UpdateListInput{
 					Description: stringPointer("new description"),
 				},
 			},

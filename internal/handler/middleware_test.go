@@ -7,9 +7,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
-	"github.com/hoachnt/go-todo-app/pkg/service"
-	service_mocks "github.com/hoachnt/go-todo-app/pkg/service/mocks"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/hoachnt/go-todo-app/internal/service"
+	service_mocks "github.com/hoachnt/go-todo-app/internal/service/mocks"
+	"github.com/hoachnt/go-todo-app/pkg/auth"
 )
 
 func TestHandler_userIdentity(t *testing.T) {
@@ -85,8 +87,9 @@ func TestHandler_userIdentity(t *testing.T) {
 			repo := service_mocks.NewMockAuthorization(c)
 			test.mockBehavior(repo, test.token)
 
-			services := &service.Service{Authorization: repo}
-			handler := Handler{services}
+			services := &service.Service{}
+			auth := &auth.User{}
+			handler := Handler{services, auth}
 
 			// Init Endpoint
 			r := gin.New()

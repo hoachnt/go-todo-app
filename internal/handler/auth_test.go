@@ -10,19 +10,20 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/magiconair/properties/assert"
 
-	"github.com/hoachnt/go-todo-app"
-	"github.com/hoachnt/go-todo-app/pkg/service"
-	service_mocks "github.com/hoachnt/go-todo-app/pkg/service/mocks"
+	"github.com/hoachnt/go-todo-app/internal/domain"
+	"github.com/hoachnt/go-todo-app/internal/service"
+	service_mocks "github.com/hoachnt/go-todo-app/internal/service/mocks"
+	"github.com/hoachnt/go-todo-app/pkg/auth"
 )
 
 func TestHandler_signUp(t *testing.T) {
 	// Init Test Table
-	type mockBehavior func(r *service_mocks.MockAuthorization, user todo.User)
+	type mockBehavior func(r *service_mocks.MockAuthorization, user domain.User)
 
 	tests := []struct {
 		name                 string
 		inputBody            string
-		inputUser            todo.User
+		inputUser            domain.User
 		mockBehavior         mockBehavior
 		expectedStatusCode   int
 		expectedResponseBody string
@@ -30,12 +31,12 @@ func TestHandler_signUp(t *testing.T) {
 		{
 			name:      "Ok",
 			inputBody: `{"username": "username", "name": "Test Name", "password": "qwerty"}`,
-			inputUser: todo.User{
+			inputUser: domain.User{
 				Username: "username",
 				Name:     "Test Name",
 				Password: "qwerty",
 			},
-			mockBehavior: func(r *service_mocks.MockAuthorization, user todo.User) {
+			mockBehavior: func(r *service_mocks.MockAuthorization, user domain.User) {
 				r.EXPECT().CreateUser(user).Return(1, nil)
 			},
 			expectedStatusCode:   200,
@@ -44,20 +45,20 @@ func TestHandler_signUp(t *testing.T) {
 		{
 			name:                 "Wrong Input",
 			inputBody:            `{"username": "username"}`,
-			inputUser:            todo.User{},
-			mockBehavior:         func(r *service_mocks.MockAuthorization, user todo.User) {},
+			inputUser:            domain.User{},
+			mockBehavior:         func(r *service_mocks.MockAuthorization, user domain.User) {},
 			expectedStatusCode:   400,
 			expectedResponseBody: `{"message":"invalid input body"}`,
 		},
 		{
 			name:      "Service Error",
 			inputBody: `{"username": "username", "name": "Test Name", "password": "qwerty"}`,
-			inputUser: todo.User{
+			inputUser: domain.User{
 				Username: "username",
 				Name:     "Test Name",
 				Password: "qwerty",
 			},
-			mockBehavior: func(r *service_mocks.MockAuthorization, user todo.User) {
+			mockBehavior: func(r *service_mocks.MockAuthorization, user domain.User) {
 				r.EXPECT().CreateUser(user).Return(0, errors.New("something went wrong"))
 			},
 			expectedStatusCode:   500,
@@ -74,8 +75,9 @@ func TestHandler_signUp(t *testing.T) {
 			repo := service_mocks.NewMockAuthorization(c)
 			test.mockBehavior(repo, test.inputUser)
 
-			services := &service.Service{Authorization: repo}
-			handler := Handler{services}
+			services := &service.Service{}
+			auth := &auth.User{}
+			handler := Handler{services, auth}
 
 			// Init Endpoint
 			r := gin.New()

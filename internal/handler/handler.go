@@ -2,20 +2,21 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/hoachnt/go-todo-app/pkg/service"
-
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 
 	_ "github.com/hoachnt/go-todo-app/docs"
+	"github.com/hoachnt/go-todo-app/internal/service"
+	"github.com/hoachnt/go-todo-app/pkg/auth"
 )
 
 type Handler struct {
 	services *service.Service
+	auth     *auth.User
 }
 
-func NewHandler(services *service.Service) *Handler {
-	return &Handler{services: services}
+func NewHandler(services *service.Service, auth *auth.User) *Handler {
+	return &Handler{services: services, auth: auth}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
