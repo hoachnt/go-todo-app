@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	sqlmock "github.com/zhashkevych/go-sqlxmock"
 
-	"github.com/hoachnt/todo-app"
+	"github.com/hoachnt/go-todo-app"
 )
 
 func TestTodoListPostgres_Create(t *testing.T) {

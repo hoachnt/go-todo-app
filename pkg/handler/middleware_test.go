@@ -7,8 +7,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
-	"github.com/hoachnt/todo-app/pkg/service"
-	service_mocks "github.com/hoachnt/todo-app/pkg/service/mocks"
+	"github.com/hoachnt/go-todo-app/pkg/service"
+	service_mocks "github.com/hoachnt/go-todo-app/pkg/service/mocks"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hoachnt/todo-app"
+	"github.com/hoachnt/go-todo-app"
 	"github.com/jmoiron/sqlx"
 )
 

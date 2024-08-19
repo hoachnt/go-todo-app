@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/hoachnt/todo-app"
-	"github.com/hoachnt/todo-app/pkg/repository"
+	"github.com/hoachnt/go-todo-app"
+	"github.com/hoachnt/go-todo-app/pkg/repository"
 )
 
 type TodoItemService struct {

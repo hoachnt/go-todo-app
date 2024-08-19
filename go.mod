@@ -1,4 +1,4 @@
-module github.com/hoachnt/todo-app
+module github.com/hoachnt/go-todo-app
 
 go 1.21
 
