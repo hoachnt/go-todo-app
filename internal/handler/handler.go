@@ -2,10 +2,10 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
 
-	_ "github.com/hoachnt/go-todo-app/docs"
+	_ "github.com/hoachnt/go-todo-app/docs" // Import the docs package to generate Swagger documentation
 	"github.com/hoachnt/go-todo-app/internal/service"
 	"github.com/hoachnt/go-todo-app/pkg/auth"
 )
@@ -22,14 +22,17 @@ func NewHandler(services *service.Service, auth *auth.User) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	// Swagger setup
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
+	// Authentication routes
 	auth := router.Group("/auth")
 	{
 		auth.POST("/sign-up", h.signUp)
 		auth.POST("/sign-in", h.signIn)
 	}
 
+	// API routes with authentication middleware
 	api := router.Group("/api", h.userIdentity)
 	{
 		lists := api.Group("/lists")
@@ -40,14 +43,14 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			lists.PUT("/:id", h.updateList)
 			lists.DELETE("/:id", h.deleteList)
 
-			items := lists.Group(":id/items")
+			items := lists.Group("/:id/items")
 			{
 				items.POST("/", h.createItem)
 				items.GET("/", h.getAllItems)
 			}
 		}
 
-		items := api.Group("items")
+		items := api.Group("/items")
 		{
 			items.GET("/:id", h.getItemById)
 			items.PUT("/:id", h.updateItem)
