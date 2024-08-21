@@ -12,6 +12,7 @@ import (
 	"github.com/hoachnt/go-todo-app/internal/service"
 	service_mocks "github.com/hoachnt/go-todo-app/internal/service/mocks"
 	"github.com/hoachnt/go-todo-app/pkg/auth"
+	"github.com/hoachnt/go-todo-app/pkg/swagger"
 )
 
 func TestHandler_userIdentity(t *testing.T) {
@@ -89,7 +90,8 @@ func TestHandler_userIdentity(t *testing.T) {
 
 			services := &service.Service{}
 			auth := &auth.User{}
-			handler := Handler{services, auth}
+			swagger := &swagger.Swagger{}
+			handler := Handler{services, auth, swagger}
 
 			// Init Endpoint
 			r := gin.New()

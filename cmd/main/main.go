@@ -57,15 +57,13 @@ func main() {
 	services := service.NewService(repos)
 
 	auth := auth.NewUser(repos)
+	swagger := swagger.NewSwagger()
 
-	handlers := handler.NewHandler(services, auth)
-	
-	swagger := swagger.NewSwagger(handlers.InitRoutes())
-	routerWithSwagger := swagger.Setup()
+	handlers := handler.NewHandler(services, auth, swagger)
 
 	srv := new(server.Server)
 	go func() {
-		if err := srv.Run(viper.GetString("port"), routerWithSwagger); err != nil {
+		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 			logrus.Fatalf("error occured while ruservicesnning http server: %s", err.Error())
 		}
 	}()

@@ -8,17 +8,12 @@ import (
 	_ "github.com/hoachnt/go-todo-app/docs"
 )
 
-type Swagger struct {
-	router *gin.Engine
+type Swagger struct{}
+
+func NewSwagger() *Swagger {
+	return &Swagger{}
 }
 
-func NewSwagger(router *gin.Engine) *Swagger {
-	return &Swagger{router: router}
-}
-
-func (swagger *Swagger) Setup() *gin.Engine {
-
-	swagger.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-
-	return swagger.router
+func (s *Swagger) Setup(router *gin.Engine) {
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 }

@@ -5,21 +5,25 @@ import (
 
 	"github.com/hoachnt/go-todo-app/internal/service"
 	"github.com/hoachnt/go-todo-app/pkg/auth"
+	"github.com/hoachnt/go-todo-app/pkg/swagger"
 )
 
 type Handler struct {
 	services *service.Service
 	auth     *auth.User
+	swagger  *swagger.Swagger
 }
 
-func NewHandler(services *service.Service, auth *auth.User) *Handler {
-	return &Handler{services: services, auth: auth}
+func NewHandler(services *service.Service, auth *auth.User, swagger *swagger.Swagger) *Handler {
+	return &Handler{services: services, auth: auth, swagger: swagger}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
 	// Swagger setup
+
+	h.swagger.Setup(router)
 	// Authentication routes
 	auth := router.Group("/auth")
 	{
