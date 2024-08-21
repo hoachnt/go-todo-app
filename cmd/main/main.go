@@ -11,12 +11,10 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
-	"github.com/hoachnt/go-todo-app/internal/handler"
+	"github.com/hoachnt/go-todo-app/config"
+	"github.com/hoachnt/go-todo-app/internal/app"
 	"github.com/hoachnt/go-todo-app/internal/repository"
 	"github.com/hoachnt/go-todo-app/internal/server"
-	"github.com/hoachnt/go-todo-app/internal/service"
-	"github.com/hoachnt/go-todo-app/pkg/auth"
-	"github.com/hoachnt/go-todo-app/pkg/swagger"
 )
 
 // @title Todo App API
@@ -33,7 +31,7 @@ import (
 func main() {
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 
-	if err := initConfig(); err != nil {
+	if err := config.InitConfig(); err != nil {
 		logrus.Fatalf("error initializing configs: %s", err.Error())
 	}
 
@@ -41,6 +39,7 @@ func main() {
 		logrus.Fatalf("error loading env variables: %s", err.Error())
 	}
 
+	// Initialize DB
 	db, err := repository.NewPostgresDB(repository.Config{
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
@@ -53,14 +52,10 @@ func main() {
 		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
 
-	repos := repository.NewRepository(db)
-	services := service.NewService(repos)
+	// Initialize application modules and dependencies
+	handlers := app.InitializeModules(db)
 
-	auth := auth.NewUser(repos)
-	swagger := swagger.NewSwagger()
-
-	handlers := handler.NewHandler(services, auth, swagger)
-
+	// Start server
 	srv := new(server.Server)
 	go func() {
 		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
@@ -83,16 +78,4 @@ func main() {
 	if err := db.Close(); err != nil {
 		logrus.Errorf("error occured on db connection close: %s", err.Error())
 	}
-}
-
-func initConfig() error {
-	env := os.Getenv("APP_ENV")
-	if env == "" {
-		env = "dev"
-	}
-
-	viper.AddConfigPath("configs")
-	viper.SetConfigName("config." + env)
-
-	return viper.ReadInConfig()
 }
