@@ -16,6 +16,7 @@ import (
 	"github.com/hoachnt/go-todo-app/internal/server"
 	"github.com/hoachnt/go-todo-app/internal/service"
 	"github.com/hoachnt/go-todo-app/pkg/auth"
+	"github.com/hoachnt/go-todo-app/pkg/swagger"
 )
 
 // @title Todo App API
@@ -54,12 +55,17 @@ func main() {
 
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
+
 	auth := auth.NewUser(repos)
+
 	handlers := handler.NewHandler(services, auth)
+	
+	swagger := swagger.NewSwagger(handlers.InitRoutes())
+	routerWithSwagger := swagger.Setup()
 
 	srv := new(server.Server)
 	go func() {
-		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
+		if err := srv.Run(viper.GetString("port"), routerWithSwagger); err != nil {
 			logrus.Fatalf("error occured while ruservicesnning http server: %s", err.Error())
 		}
 	}()

@@ -2,10 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	swaggerfiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 
-	_ "github.com/hoachnt/go-todo-app/docs" // Import the docs package to generate Swagger documentation
 	"github.com/hoachnt/go-todo-app/internal/service"
 	"github.com/hoachnt/go-todo-app/pkg/auth"
 )
@@ -23,8 +20,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
 	// Swagger setup
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-
 	// Authentication routes
 	auth := router.Group("/auth")
 	{
