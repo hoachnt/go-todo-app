@@ -82,7 +82,13 @@ func main() {
 }
 
 func initConfig() error {
+	env := os.Getenv("APP_ENV")
+	if env == "" {
+		env = "dev"
+	}
+
 	viper.AddConfigPath("configs")
-	viper.SetConfigName("config")
+	viper.SetConfigName("config." + env)
+
 	return viper.ReadInConfig()
 }
